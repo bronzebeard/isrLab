@@ -39,10 +39,10 @@ class ExpressionParser {
         while (i < str.length && str[i] != ')') {
             if (str[i] == '>') {
                 i += 2
-                firstArg = composeBiFun(firstArg, upperLowPrior(),Int::shr)
+                firstArg = composeBiFun(firstArg, upperLowPrior(), Int::shr)
             } else if (str[i] == '<') {
                 i += 2
-                firstArg = composeBiFun(firstArg, upperLowPrior(),Int::shl)
+                firstArg = composeBiFun(firstArg, upperLowPrior(), Int::shl)
             }
         }
 
@@ -106,7 +106,7 @@ class ExpressionParser {
                 return { x -> arg(x) * (-1) }
             }
             'a' -> {
-                if (str[i+1]=='b' && str[i+2]=='s')
+                if (str[i + 1] == 'b' && str[i + 2] == 's')
                     i += 3
                 arg = highPrior()
                 return { x -> abs(arg(x)) }
