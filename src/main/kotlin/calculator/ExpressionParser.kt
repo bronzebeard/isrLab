@@ -115,10 +115,9 @@ class ExpressionParser {
             's' -> {
                 i++
                 arg = highPrior()
-                return { x -> 2*(arg(x)).toDouble().pow(2).toInt() }
+                return { x -> (arg(x)).toDouble().pow(2).toInt() }
             }
-
-
+            
             '(' -> {
                 i++
                 return lowPrior()
