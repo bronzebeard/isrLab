@@ -7,7 +7,7 @@ import kotlin.math.pow
 
 typealias Fun<T> = (List<T>) -> T
 typealias IntFun = Fun<Int>
-typealias ReceiverFun<T> = T.(T) -> T
+typealias ReceiverFun<T> = (T,T) -> T
 typealias ReceiverIntFun = ReceiverFun<Int>
 
 /**
@@ -89,6 +89,11 @@ class ExpressionParser {
                 secondArg = highPrior()
                 firstArg = composeBiFun(firstArg, secondArg, Int::div)
             }
+            else if (str[i]=='^') {
+                i++
+                    secondArg = highPrior()
+                    return composeBiFun(firstArg,secondArg,{x:Int,y:Int -> x.toDouble().pow(y).toInt()})
+            }
 
         }
 
@@ -155,7 +160,7 @@ class ExpressionParser {
 
     private fun composeBiFun(firstArg: IntFun, secondArg: IntFun, func: ReceiverIntFun): IntFun {
         return fun(x): Int {
-            return firstArg(x).func(secondArg(x))
+            return func(firstArg(x),secondArg(x))
         }
     }
 }

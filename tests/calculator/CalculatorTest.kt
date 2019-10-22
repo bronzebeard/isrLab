@@ -49,7 +49,7 @@ internal class CalculatorTest {
 
     @Test
     fun additionTests() {
-        runTest(Int::plus, "+", i, j.drop(1))
+        runTest(Int::plus, "+", i, j)
         //Edge-cases
         assertEquals(
             Int.MIN_VALUE + Int.MAX_VALUE,
@@ -59,12 +59,16 @@ internal class CalculatorTest {
 
     @Test
     fun substractionTest() {
-        runTest(Int::minus, "-", i, j.drop(1))
+        runTest(Int::minus, "-", i, j)
         //Edge-cases
         assertEquals(
             Int.MIN_VALUE - Int.MAX_VALUE,
             Calculator(SR("" + Int.MIN_VALUE + "-" + Int.MAX_VALUE), SR(), SW()).calculate()
         )
+    }
+    @Test
+    fun powTest() {
+        runTest({x:Int,y:Int -> x.toDouble().pow(y).toInt()},"^",i,j)
     }
 
     @Test
@@ -128,11 +132,11 @@ internal class CalculatorTest {
         map { async(Dispatchers.Default) { f(it) } }.forEach { it.await() }
     }
 
-    private fun runTest(exFun: Int.(Int) -> Int, strRep: String, first: List<Int>, second: List<Int>) {
+    private fun runTest(exFun: (Int,Int) -> Int, strRep: String, first: List<Int>, second: List<Int>) {
         first.forEachParallel { cur ->
             second.forEach {
                 assertEquals(
-                    cur.exFun(it),
+                    exFun(cur,it),
                     Calculator(SR("" + cur + strRep + it), SR(), SW()).calculate()
                 )
             }
