@@ -105,7 +105,12 @@ class ExpressionParser {
                 arg = highPrior()
                 return { x -> arg(x) * (-1) }
             }
-
+            'a' -> {
+                if (str[i+1]=='b' && str[i+2]=='s')
+                    i += 3
+                arg = highPrior()
+                return { x -> abs(arg(x)) }
+            }
 
             '(' -> {
                 i++
