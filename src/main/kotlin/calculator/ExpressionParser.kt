@@ -117,7 +117,24 @@ class ExpressionParser {
                 arg = highPrior()
                 return { x -> (arg(x)).toDouble().pow(2).toInt() }
             }
-            
+
+            'x' -> {
+                //val tmp = str[i]
+                i++
+                var cnt = -1
+                while (i < str.length && Character.isDigit(str[i])) {
+                    if (cnt < 0) cnt = 0
+                    cnt = cnt * 10 + Integer.valueOf(str[i].toString(), 10)
+                    i++
+                }
+                if (cnt < 0) throw InputMismatchException("Incorrect variable name, correct format is xNum (e.g. x0, x3)")
+                return fun(x): Int {
+                    if (cnt < x.size)
+                        return x[cnt]
+                    else throw InputMismatchException("Variable requested in the expression is not present in the supplied list.")
+                }
+
+            }
             '(' -> {
                 i++
                 return lowPrior()
